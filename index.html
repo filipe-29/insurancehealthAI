@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthGuard Insurance</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="logo">HealthGuard</div>
+            <div class="nav-links">
+                <a href="#plans">Plans</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <button class="btn btn-primary">Get Quote</button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Protect Your Health with AI-Powered Insurance</h1>
+            <p>Personalized coverage recommendations using advanced artificial intelligence</p>
+            <button class="btn btn-primary" id="quoteBtn">Get Your Personalized Quote</button>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>AI-Powered Recommendations</h3>
+                    <p>Get personalized insurance recommendations based on your health profile and needs.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>24/7 Virtual Assistant</h3>
+                    <p>Our AI assistant is always available to answer your questions and provide support.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Smart Claims Processing</h3>
+                    <p>Experience faster claims processing with our AI-driven automation system.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="chatButton">AI</div>
+
+    <div class="ai-chat" id="aiChat">
+        <div class="chat-header">
+            <span>AI Assistant</span>
+            <span id="closeChat" style="cursor: pointer;">×</span>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-bubble ai-bubble">Hello! How can I help you today?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Type your message...">
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            const chatButton = $('#chatButton');
+            const aiChat = $('#aiChat');
+            const closeChat = $('#closeChat');
+            const userInput = $('#userInput');
+            const chatMessages = $('#chatMessages');
+            const quoteBtn = $('#quoteBtn');
+
+            // Simple AI responses
+            const aiResponses = {
+                'hello': 'Hi there! How can I assist you with your health insurance needs?',
+                'quote': 'I can help you get a quote! Could you please tell me your age and any pre-existing conditions?',
+                'price': 'Our plans start from $199/month. Would you like to see a detailed breakdown of our plans?',
+                'coverage': 'We offer comprehensive coverage including medical, dental, and vision. What specific coverage are you interested in?',
+                'default': 'I understand. Let me connect you with one of our insurance specialists who can better assist you.'
+            };
+
+            // Toggle chat window
+            chatButton.click(function() {
+                aiChat.toggle();
+                chatButton.toggle();
+            });
+
+            closeChat.click(function() {
+                aiChat.toggle();
+                chatButton.toggle();
+            });
+
+            // Handle user input
+            userInput.keypress(function(e) {
+                if(e.which == 13) {
+                    const message = $(this).val().toLowerCase();
+                    
+                    // Add user message
+                    chatMessages.append(`
+                        <div class="chat-bubble">
+                            ${$(this).val()}
+                        </div>
+                    `);
+
+                    // Get AI response
+                    let response = aiResponses.default;
+                    for(const [key, value] of Object.entries(aiResponses)) {
+                        if(message.includes(key)) {
+                            response = value;
+                            break;
+                        }
+                    }
+
+                    // Add AI response after a small delay
+                    setTimeout(() => {
+                        chatMessages.append(`
+                            <div class="chat-bubble ai-bubble">
+                                ${response}
+                            </div>
+                        `);
+                        chatMessages.scrollTop(chatMessages[0].scrollHeight);
+                    }, 500);
+
+                    // Clear input
+                    $(this).val('');
+                }
+            });
+
+            // Quote button handler
+            quoteBtn.click(function() {
+                aiChat.show();
+                chatButton.hide();
+                chatMessages.append(`
+                    <div class="chat-bubble ai-bubble">
+                        I can help you get a personalized quote! Could you please tell me your age and any pre-existing conditions?
+                    </div>
+                `);
+                chatMessages.scrollTop(chatMessages[0].scrollHeight);
+            });
+        });
+    </script>
+</body>
+</html>
